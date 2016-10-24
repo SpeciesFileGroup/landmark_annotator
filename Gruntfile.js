@@ -29,7 +29,8 @@ module.exports = function (grunt) {
                         src: 'demo/**',
                         dest: 'build/',
                         expand: true,
-                        flatten: true
+                        flatten: true,
+                        filter: 'isFile'
                     },
                     {
                         src: [dependencies],
