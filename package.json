@@ -1,0 +1,33 @@
+{
+  "name": "landmark_annotator",
+  "version": "1.0.0",
+  "description": "Experimental interface for landmark morphometrics",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SpeciesFileGroup/landmark_annotator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SpeciesFileGroup/landmark_annotator/issues"
+  },
+  "homepage": "https://github.com/SpeciesFileGroup/landmark_annotator#readme",
+  "dependencies": {
+    "babel-preset-react": "6.16.0",
+    "babelify": "7.3.0",
+    "grunt": "1.0.1",
+    "grunt-bg-shell": "2.3.3",
+    "grunt-browserify": "5.0.0",
+    "grunt-contrib-clean": "1.0.0",
+    "grunt-contrib-copy": "1.0.0",
+    "grunt-contrib-watch": "1.0.0",
+    "live-server": "1.1.0",
+    "load-grunt-tasks": "3.5.2",
+    "react": "15.3.2",
+    "react-dom": "15.3.2"
+  }
+}
