@@ -26,8 +26,10 @@ module.exports = function (grunt) {
             build: {
                 files: [
                     {
-                        src: 'demo/index.html',
-                        dest: 'build/index.html'
+                        src: 'demo/**',
+                        dest: 'build/',
+                        expand: true,
+                        flatten: true
                     },
                     {
                         src: [dependencies],
