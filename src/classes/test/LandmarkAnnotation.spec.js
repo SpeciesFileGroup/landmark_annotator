@@ -61,6 +61,14 @@ describe('LandmarkAnnotation', () => {
             })
         });
     });
+
+    describe('image url', () => {
+        it('should be able to have a url to an image', () => {
+            const url = `${Math.random().toString(36)}.html`;
+            const la = new LandmarkAnnotation({ imageUrl: url });
+            expect(la.getViewmodel().imageUrl).to.equal(url);
+        });
+    });
 });
 
 function assertDefault(la) {

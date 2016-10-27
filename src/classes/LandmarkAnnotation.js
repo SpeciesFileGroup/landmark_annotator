@@ -3,11 +3,12 @@ const Landmark = require('./Landmark');
 class LandmarkAnnotation {
     constructor(args = {}) {
         const {
-            landmarks = []
+            landmarks = [],
+            imageUrl = ``
         } = args;
 
         this.landmarks = landmarks.map(l => new Landmark(l));
-        this.imageUrl = '';
+        this.imageUrl = imageUrl;
         this.distancePerPixel = 0.01;
         this.distanceUnit = 'mm';
     }

@@ -14,9 +14,8 @@ class LandmarkAnnotator extends React.Component {
     }
 
     render() {
-        const landmarkAnnotation = new LandmarkAnnotation(store.getState());
-        const { landmarks, imageUrl, distancePerPixel, distanceUnit } = landmarkAnnotation.getViewmodel();
-        console.log(`imageUrl: ${imageUrl}`);
+        const landmarkAnnotationData = new LandmarkAnnotation(store.getState().landmarkAnnotation);
+        const { landmarks, imageUrl, distancePerPixel, distanceUnit } = landmarkAnnotationData.getViewmodel();
 
         return (
             <div className="landmark-annotator">
