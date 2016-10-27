@@ -22,7 +22,7 @@ module.exports = function (grunt) {
                     transform: [['babelify', {presets: ['react']}]],
                     watch: true
                 },
-                src: ['src/**/*.js'],
+                src: ['src/landmarkAnnotator.js'],
                 dest: `${buildDir}${jsOutput}`
             }
         },
