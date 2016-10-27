@@ -10,7 +10,10 @@ module.exports = function (grunt) {
     var taskConfig = {
         bgShell: {
             serve: {
-                cmd: './node_modules/.bin/live-server build/'
+                cmd: `./node_modules/.bin/live-server ${buildDir}`
+            },
+            test: {
+                cmd: './node_modules/.bin/mocha src/**/*.spec.js'
             }
         },
         browserify: {
@@ -76,5 +79,9 @@ module.exports = function (grunt) {
     grunt.registerTask('serve', [
         'build',
         'bgShell:serve'
+    ]);
+
+    grunt.registerTask('test', [
+        'bgShell:test'
     ]);
 };
