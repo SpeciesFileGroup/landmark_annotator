@@ -19,25 +19,41 @@ class LandmarkAnnotator extends React.Component {
 
         return (
             <div className="landmark-annotator">
-                <div className="landmark-annotator__image-container">
-                    <img className="landmark-annotator__image" src={ imageUrl }/>
+                <div className="landmark-annotator__landmarks-and-image-container">
+                    <div className="landmark-annotator__landmarks-container">
+                        <button className="landmark-annotator__button" type="button" onClick={ this.createLandmark }>Add Landmark</button>
+                        <ul className="landmark-annotator__landmarks-list">
+                            {
+                                landmarks.map((l, i) => {
+                                    return (
+                                        <li className="landmark-annotator__landmarks-list-item" key={ i }>
+                                            <label>
+                                                { l.title }
+                                                <input type="radio" name="landmark-radios" />
+                                            </label>
+                                            <input type="color" />
+                                        </li>
+                                    )
+                                })
+                            }
+                        </ul>
+                    </div>
+                    <div className="landmark-annotator__image-container">
+                        <img className="landmark-annotator__image" src={ imageUrl }/>
+                    </div>
                 </div>
                 <div className="landmark-annotator__points">
                     <div className="landmark-annotator__points-title">Result</div>
                     <ul className="landmark-annotator__point-list">
-                        {
-                            landmarks.map(l => {
-                                l.points.map(p => {
-                                    return (
-                                        <li>{ `${p.x}, ${p.y}` }</li>
-                                    )
-                                })
-                            })
-                        }
+
                     </ul>
                 </div>
             </div>
         );
+    }
+
+    createLandmark() {
+        store.dispatch({ type: ACTION_TYPES.CreateLandmark });
     }
 }
 
