@@ -3,6 +3,7 @@ const ACTION_TYPES = require('./actions/actions').ACTION_TYPES;
 const React = require('react');
 const ReactDOM = require('react-dom');
 const LandmarkAnnotation = require('./classes/LandmarkAnnotation');
+const Landmark = require('./classes/Landmark');
 
 class LandmarkAnnotator extends React.Component {
     componentDidMount() {
@@ -47,12 +48,17 @@ class LandmarkAnnotator extends React.Component {
                     </div>
                     <div className="landmark-annotator__image-container">
                         <img className="landmark-annotator__image" src={ imageUrl }/>
+                        <div
+                            className="landmark-annotator__interactable-area"
+                            ref={ (element) => this.interactableAreaElement = element }
+                            onClick={ this.addPointToImage.bind(this) }>
+                        </div>
                     </div>
                 </div>
                 <div className="landmark-annotator__points">
                     <div className="landmark-annotator__points-title">Result</div>
                     <ul className="landmark-annotator__point-list">
-
+                        { this.attemptMakePointListItem(landmarks, state.selectedLandmarkId) }
                     </ul>
                 </div>
             </div>
@@ -72,6 +78,29 @@ class LandmarkAnnotator extends React.Component {
         const color = event.target.value;
         const data = { color };
         store.dispatch({ type: ACTION_TYPES.SetLandmarkData, args: { id, data } });
+    }
+
+    addPointToImage(event) {
+        const {pageX, pageY} = event;
+        const interactionRect = this.interactableAreaElement.getBoundingClientRect();
+        const point = Landmark.getPointFromClick(pageX, pageY, interactionRect);
+        if (point)
+            store.dispatch({ type: ACTION_TYPES.AddPoint, args: point });
+    }
+
+    attemptMakePointListItem(landmarks, selectedLandmarkId) {
+        if (!selectedLandmarkId)
+            return null;
+
+        const { points = [] } = landmarks.find(l => l.id === selectedLandmarkId);
+
+        return (
+            points.map(p => {
+                return (
+                    <li>{ p.x }, {p.y}</li>
+                );
+            })
+        )
     }
 }
 

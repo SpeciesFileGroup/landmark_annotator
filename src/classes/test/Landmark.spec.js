@@ -75,6 +75,29 @@ describe('Landmark', () => {
             expect(l.getViewmodel().id).to.equal(id);
         });
     });
+
+    describe('creating points from location', () => {
+        const boundingRect = {
+            top: 100,
+            left: 100,
+            width: 100,
+            height: 100
+        };
+
+        const pageX = 150;
+        const pageY = 150;
+
+        it('should be able to find the x and y on the image from event info and bounding rects', () => {
+            expect(Landmark.getPointFromClick(pageX, pageY, boundingRect)).to.deep.equal([50, 50]);
+        });
+
+        it('should return null if the click was outside the rect', () => {
+            expect(Landmark.getPointFromClick(99, 99, boundingRect)).to.be.null;
+            expect(Landmark.getPointFromClick(201, 201, boundingRect)).to.be.null;
+            expect(Landmark.getPointFromClick(101, 999, boundingRect)).to.be.null;
+            expect(Landmark.getPointFromClick(201, 150, boundingRect)).to.be.null;
+        });
+    });
 });
 
 function assertDefaults(landmark) {

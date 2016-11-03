@@ -1,3 +1,10 @@
+$full
+    bottom 0
+    left 0
+    position absolute
+    right 0
+    top 0
+
 .landmark-annotator
     display flex
     flex-flow column nowrap
@@ -33,12 +40,11 @@
         flex 1 1 auto
         position relative
 
+    &__interactable-area
+        @extend $full
+
     &__image
-        bottom 0
-        left 0
-        position absolute
-        right 0
-        top 0
+        @extend $full
         max-height 100%
         max-width 100%
 

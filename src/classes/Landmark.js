@@ -27,6 +27,22 @@ class Landmark {
 
         return { color, points, title, id };
     }
+
+    static getPointFromClick(pageX, pageY, clickableRect) {
+        if (pageX > clickableRect.left + clickableRect.width)
+            return null;
+
+        if (pageY > clickableRect.top + clickableRect.height)
+            return null;
+
+        if (pageX < clickableRect.left)
+            return null;
+
+        if (pageY < clickableRect.top)
+            return null;
+
+        return [pageX - clickableRect.left, pageY - clickableRect.top];
+    }
 }
 
 module.exports = Landmark;
