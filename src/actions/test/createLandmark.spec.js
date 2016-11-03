@@ -6,6 +6,7 @@ describe('createLandmark Action', () => {
     it('should create a new landmark and add it to the state', () => {
         const state = {
             landmarkAnnotation: {
+                imageUrl: `http://www.placebacon.net/4000/3000`,
                 landmarks: []
             }
         };
@@ -16,6 +17,7 @@ describe('createLandmark Action', () => {
 
         const expectedState = {
             landmarkAnnotation: {
+                imageUrl: `http://www.placebacon.net/4000/3000`,
                 landmarks: [
                     {}
                 ]
@@ -27,7 +29,9 @@ describe('createLandmark Action', () => {
 
     it('should add a landmarks array if there is none', () => {
         const state = {
-            landmarkAnnotation: {}
+            landmarkAnnotation: {
+                imageUrl: `http://www.placebacon.net/4000/3000`
+            }
         };
 
         deepFreeze(state);
@@ -36,6 +40,7 @@ describe('createLandmark Action', () => {
 
         const expectedState = {
             landmarkAnnotation: {
+                imageUrl: `http://www.placebacon.net/4000/3000`,
                 landmarks: [
                     {}
                 ]
@@ -48,6 +53,7 @@ describe('createLandmark Action', () => {
     it('should add the landmark to the end of the existing list', () => {
         const state = {
             landmarkAnnotation: {
+                imageUrl: `http://www.placebacon.net/4000/3000`,
                 landmarks: [
                     {
                         points: [
@@ -68,6 +74,7 @@ describe('createLandmark Action', () => {
 
         const expectedState = {
             landmarkAnnotation: {
+                imageUrl: `http://www.placebacon.net/4000/3000`,
                 landmarks: [
                     {
                         points: [
