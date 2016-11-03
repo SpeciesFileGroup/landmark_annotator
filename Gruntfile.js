@@ -1,4 +1,5 @@
 const buildDir = 'build/';
+const componentJs = 'src/landmarkAnnotator.component.js';
 const jsOutput = 'landmark-annotator.js';
 const cssOutput = 'landmark-annotator.css';
 
@@ -9,9 +10,6 @@ module.exports = function (grunt) {
 
     var taskConfig = {
         bgShell: {
-            serve: {
-                cmd: `./node_modules/.bin/live-server ${buildDir}`
-            },
             test: {
                 cmd: './node_modules/.bin/mocha src/**/*.spec.js'
             }
@@ -20,14 +18,27 @@ module.exports = function (grunt) {
             build: {
                 options: {
                     transform: [['babelify', {presets: ['react']}]],
-                    watch: true
+                    watch: true,
+                    browserifyOptions: {
+                        debug: true
+                    }
                 },
-                src: ['src/landmarkAnnotator.js'],
+                src: [componentJs],
                 dest: `${buildDir}${jsOutput}`
             }
         },
         clean: {
             build: ['build/']
+        },
+        connect: {
+            dev: {
+                options: {
+                    open: true,
+                    port: 9000,
+                    livereload: 35729,
+                    base: buildDir
+                }
+            }
         },
         copy: {
             build: {
@@ -60,6 +71,9 @@ module.exports = function (grunt) {
             }
         },
         watch: {
+            options: {
+                livereload: true
+            },
             stylus: {
                 files: ['src/**/*.styl'],
                 tasks: ['stylus:build']
@@ -78,7 +92,8 @@ module.exports = function (grunt) {
 
     grunt.registerTask('serve', [
         'build',
-        'bgShell:serve'
+        'connect:dev',
+        'watch'
     ]);
 
     grunt.registerTask('test', [
