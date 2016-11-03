@@ -3,12 +3,14 @@ class Landmark {
         const {
             color = '#00FF00',
             points = [],
-            title = 'Untitled'
+            title = 'Untitled',
+            id = null
         } = data;
 
         this.color = color;
         this.points = points;
         this.title = title;
+        this.id = id;
     }
 
     getViewmodel() {
@@ -21,7 +23,9 @@ class Landmark {
 
         const title = this.title;
 
-        return { color, points, title };
+        const id = this.id;
+
+        return { color, points, title, id };
     }
 }
 

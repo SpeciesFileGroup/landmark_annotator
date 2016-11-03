@@ -1,95 +1,60 @@
-const expect = require('chai').expect;
-const deepFreeze = require('deep-freeze');
-const createLandmark = require('../createLandmark');
+const expect = require( 'chai' ).expect;
+const deepFreeze = require( 'deep-freeze' );
+const createLandmark = require( '../createLandmark' );
 
-describe('createLandmark Action', () => {
-    it('should create a new landmark and add it to the state', () => {
+describe( 'createLandmark Action', () => {
+    it( 'should create a new landmark with an id and add it to the state', () => {
         const state = {
-            landmarkAnnotation: {
-                imageUrl: `http://www.placebacon.net/4000/3000`,
-                landmarks: []
-            }
+            imageUrl: `http://www.placebacon.net/4000/3000`,
+            landmarks: []
         };
 
-        deepFreeze(state);
+        deepFreeze( state );
 
-        const actualState = createLandmark(state);
+        const actualState = createLandmark( state );
 
-        const expectedState = {
-            landmarkAnnotation: {
-                imageUrl: `http://www.placebacon.net/4000/3000`,
-                landmarks: [
-                    {}
-                ]
-            }
-        };
+        expect( actualState.imageUrl ).to.equal( `http://www.placebacon.net/4000/3000` );
+        expect( actualState.landmarks ).to.have.lengthOf(1);
+        expect( actualState.landmarks[0].id ).to.be.a('string');
+    } );
 
-        expect(actualState).to.deep.equal(expectedState);
-    });
-
-    it('should add a landmarks array if there is none', () => {
+    it( 'should add a landmarks array if there is none', () => {
         const state = {
-            landmarkAnnotation: {
-                imageUrl: `http://www.placebacon.net/4000/3000`
-            }
+            imageUrl: `http://www.placebacon.net/4000/3000`
         };
 
-        deepFreeze(state);
+        deepFreeze( state );
 
-        const actualState = createLandmark(state);
+        const actualState = createLandmark( state );
 
-        const expectedState = {
-            landmarkAnnotation: {
-                imageUrl: `http://www.placebacon.net/4000/3000`,
-                landmarks: [
-                    {}
-                ]
-            }
-        };
+        expect(actualState.landmarks).to.have.lengthOf(1);
+    } );
 
-        expect(actualState).to.deep.equal(expectedState);
-    });
-
-    it('should add the landmark to the end of the existing list', () => {
+    it( 'should add the landmark to the end of the existing list', () => {
         const state = {
-            landmarkAnnotation: {
-                imageUrl: `http://www.placebacon.net/4000/3000`,
-                landmarks: [
-                    {
-                        points: [
-                            [25, 50]
-                        ]
-                    },
-                    {
-                        title: 'Foobar'
-                    },
-                    {}
-                ]
-            }
+            imageUrl: `http://www.placebacon.net/4000/3000`,
+            landmarks: [
+                {
+                    id: '1',
+                    points: [
+                        [25, 50]
+                    ]
+                },
+                {
+                    id: '2',
+                    title: 'Foobar'
+                },
+                {
+                    id: '3'
+                }
+            ]
         };
 
-        deepFreeze(state);
+        deepFreeze( state );
 
-        const actualState = createLandmark(state);
+        const actualState = createLandmark( state );
 
-        const expectedState = {
-            landmarkAnnotation: {
-                imageUrl: `http://www.placebacon.net/4000/3000`,
-                landmarks: [
-                    {
-                        points: [
-                            [25, 50]
-                        ]
-                    },
-                    {
-                        title: 'Foobar'
-                    },
-                    {},
-                    {}
-                ]
-            }
-        };
-
-        expect(actualState).to.deep.equal(expectedState);
-    });
-});
+        expect( actualState.landmarks ).to.have.lengthOf(4);
+        expect( actualState.landmarks[3].id ).to.be.a('string');
+    } );
+} );

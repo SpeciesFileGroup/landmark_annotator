@@ -28,6 +28,7 @@ describe('LandmarkAnnotation', () => {
         it('should return landmark viewmodels', () => {
             const landmarks = [
                 {
+                    id: '1',
                     points: [
                         [500, 500]
                     ],
@@ -46,7 +47,8 @@ describe('LandmarkAnnotation', () => {
                     }
                 ],
                 title: 'Foo',
-                color: '#339988'
+                color: '#339988',
+                id: '1'
             });
         });
     });

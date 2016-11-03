@@ -14,22 +14,27 @@ class LandmarkAnnotator extends React.Component {
     }
 
     render() {
-        const landmarkAnnotationData = new LandmarkAnnotation(store.getState().landmarkAnnotation);
+        const state = store.getState();
+        console.info(state);
+        const landmarkAnnotationData = new LandmarkAnnotation(state);
         const { landmarks, imageUrl, distancePerPixel, distanceUnit } = landmarkAnnotationData.getViewmodel();
 
         return (
             <div className="landmark-annotator">
                 <div className="landmark-annotator__landmarks-and-image-container">
                     <div className="landmark-annotator__landmarks-container">
-                        <button className="landmark-annotator__button" type="button" onClick={ this.createLandmark }>Add Landmark</button>
+                        <button className="landmark-annotator__button" type="button" onClick={ this.createLandmark.bind(this) }>Add Landmark</button>
                         <ul className="landmark-annotator__landmarks-list">
                             {
-                                landmarks.map((l, i) => {
+                                landmarks.map(l => {
                                     return (
-                                        <li className="landmark-annotator__landmarks-list-item" key={ i }>
+                                        <li className="landmark-annotator__landmarks-list-item" key={ l.id }>
                                             <label>
-                                                { l.title }
-                                                <input type="radio" name="landmark-radios" />
+                                                <span className="landmark-annotator__radio-text">{ l.title }</span>
+                                                <input
+                                                    type="radio"
+                                                    name="landmark-radios"
+                                                    onChange={ this.handleLandmarkRadioChange.bind(this, l.id) } />
                                             </label>
                                             <input type="color" />
                                         </li>
@@ -54,6 +59,11 @@ class LandmarkAnnotator extends React.Component {
 
     createLandmark() {
         store.dispatch({ type: ACTION_TYPES.CreateLandmark });
+    }
+
+    handleLandmarkRadioChange(landmarkId, event) {
+        if (event.target.value)
+            store.dispatch({ type: ACTION_TYPES.SelectLandmark, args: landmarkId });
     }
 }
 

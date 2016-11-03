@@ -1,10 +1,9 @@
+const generateUUID = require('../utils/generateId');
+
 function createLandmark(state, args = {}) {
-    const oldLandmarks = (state.landmarkAnnotation.landmarks || []);
-    const landmarks = oldLandmarks.concat( [ {} ] );
-
-    const landmarkAnnotation = Object.assign({}, state.landmarkAnnotation, { landmarks });
-
-    return Object.assign({}, state, { landmarkAnnotation });
+    const oldLandmarks = (state.landmarks || []);
+    const landmarks = oldLandmarks.concat( [ { id: generateUUID() } ] );
+    return Object.assign({}, state, { landmarks });
 }
 
 module.exports = createLandmark;

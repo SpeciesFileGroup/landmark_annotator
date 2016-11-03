@@ -21,7 +21,8 @@ describe('Landmark', () => {
             expect(actualViewmodel).to.deep.equal({
                 color: DefaultColor,
                 points: [],
-                title: DefaultTitle
+                title: DefaultTitle,
+                id: null
             })
         });
     });
@@ -64,6 +65,14 @@ describe('Landmark', () => {
             const title = 'FOO BAR BAZZZZZ';
             const l = new Landmark({ title });
             expect(l.getViewmodel().title).to.equal(title);
+        });
+    });
+
+    describe('id', () => {
+        it('should be able to have an id', () => {
+            const id = "1";
+            const l = new Landmark({ id });
+            expect(l.getViewmodel().id).to.equal(id);
         });
     });
 });
