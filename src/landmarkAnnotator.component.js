@@ -52,6 +52,7 @@ class LandmarkAnnotator extends React.Component {
                             className="landmark-annotator__interactable-area"
                             ref={ (element) => this.interactableAreaElement = element }
                             onClick={ this.addPointToImage.bind(this) }>
+                                { this.makeLandmarkPoints(landmarks) }
                         </div>
                     </div>
                 </div>
@@ -88,6 +89,22 @@ class LandmarkAnnotator extends React.Component {
             store.dispatch({ type: ACTION_TYPES.AddPoint, args: point });
     }
 
+    makeLandmarkPoints(landmarks) {
+        return landmarks.map(landmark => {
+            const { points = [] } = landmark;
+            return points.map(p => {
+                const style = {
+                    backgroundColor: landmark.color,
+                    left: `${p.x}px`,
+                    top: `${p.y}px`
+                };
+                return (
+                    <div className="landmark-annotator__point" style={ style }></div>
+                )
+            });
+        });
+    }
+
     attemptMakePointListItem(landmarks, selectedLandmarkId) {
         if (!selectedLandmarkId)
             return null;
@@ -95,9 +112,9 @@ class LandmarkAnnotator extends React.Component {
         const { points = [] } = landmarks.find(l => l.id === selectedLandmarkId);
 
         return (
-            points.map(p => {
+            points.map((p, i) => {
                 return (
-                    <li>{ p.x }, {p.y}</li>
+                    <li key={i}>{ p.x }, {p.y}</li>
                 );
             })
         )
