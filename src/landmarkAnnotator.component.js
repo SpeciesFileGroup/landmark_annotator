@@ -36,7 +36,9 @@ class LandmarkAnnotator extends React.Component {
                                                     name="landmark-radios"
                                                     onChange={ this.handleLandmarkRadioChange.bind(this, l.id) } />
                                             </label>
-                                            <input type="color" />
+                                            <input
+                                                type="color"
+                                                onChange={ this.handleLandmarkColorChange.bind(this, l.id) } />
                                         </li>
                                     )
                                 })
@@ -64,6 +66,12 @@ class LandmarkAnnotator extends React.Component {
     handleLandmarkRadioChange(landmarkId, event) {
         if (event.target.value)
             store.dispatch({ type: ACTION_TYPES.SelectLandmark, args: landmarkId });
+    }
+
+    handleLandmarkColorChange(id, event) {
+        const color = event.target.value;
+        const data = { color };
+        store.dispatch({ type: ACTION_TYPES.SetLandmarkData, args: { id, data } });
     }
 }
 
