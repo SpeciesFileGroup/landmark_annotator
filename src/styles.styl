@@ -44,18 +44,32 @@ $full
         @extend $full
 
     &__point
+        background-color currentColor
+        border-radius 50%
         height 1vmin
         transform translate(-50%, -50%)
         position absolute
         width 1vmin
+
+        &:after
+            animation ripple 1 ease-in-out 300ms
+            border 2px solid currentColor
+            border-radius 50%
+            bottom 0
+            content ""
+            left 0
+            position absolute
+            right 0
+            top 0
 
     &__image
         @extend $full
         max-height 100%
         max-width 100%
 
-    &__points
+    &__points-data-container
         flex 0 0 15vh
+        overflow auto
         padding 1vmin
 
     &__points-list
@@ -78,3 +92,13 @@ $full
         &:hover
         &:focus
             background-color greenyellow
+            cursor pointer
+
+@keyframes ripple
+    from
+        opacity 1
+        transform scale(1)
+
+    to
+        opacity 0
+        transform scale(5)

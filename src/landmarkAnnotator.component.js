@@ -39,6 +39,7 @@ class LandmarkAnnotator extends React.Component {
                                             </label>
                                             <input
                                                 type="color"
+                                                value={ l.color }
                                                 onChange={ this.handleLandmarkColorChange.bind(this, l.id) } />
                                         </li>
                                     )
@@ -56,7 +57,7 @@ class LandmarkAnnotator extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="landmark-annotator__points">
+                <div className="landmark-annotator__points-data-container">
                     <div className="landmark-annotator__points-title">Result</div>
                     <ul className="landmark-annotator__point-list">
                         { this.attemptMakePointListItem(landmarks, state.selectedLandmarkId) }
@@ -94,7 +95,7 @@ class LandmarkAnnotator extends React.Component {
             const { points = [] } = landmark;
             return points.map(p => {
                 const style = {
-                    backgroundColor: landmark.color,
+                    color: landmark.color,
                     left: `${p.x}px`,
                     top: `${p.y}px`
                 };
