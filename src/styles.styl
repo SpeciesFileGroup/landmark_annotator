@@ -28,6 +28,7 @@ $full
         list-style none inside
 
         &-item
+            animation landmark-item-enter 1 140ms ease-out
             display flex
             justify-content space-between
             padding 8px
@@ -87,12 +88,22 @@ $full
         display block
         font-size 18px
         margin auto
+        transition background-color 200ms
         padding 6px
 
         &:hover
         &:focus
             background-color greenyellow
             cursor pointer
+
+@keyframes landmark-item-enter
+    from
+        opacity 0
+        transform translateX(-100px)
+
+    to
+        opacity 1
+        transform translateX(0px)
 
 @keyframes ripple
     from
