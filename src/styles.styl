@@ -44,24 +44,87 @@ $full
     &__interactable-area
         @extend $full
 
+    &__point-base
+        position absolute
+
     &__point
         background-color currentColor
         border-radius 50%
         height 1vmin
+        min-height 5px
+        min-width 5px
         transform translate(-50%, -50%)
         position absolute
         width 1vmin
 
         &:after
-            animation ripple 1 ease-in-out 300ms
+            animation ripple 1 ease-in-out 300ms 250ms
             border 2px solid currentColor
             border-radius 50%
             bottom 0
             content ""
             left 0
+            opacity 0
             position absolute
             right 0
             top 0
+
+    &__targetting-rule-from-left
+    &__targetting-rule-from-right
+    &__targetting-rule-from-top
+    &__targetting-rule-from-bottom
+        pointer-events none
+        position absolute
+
+        &:after
+            background-color currentColor
+            box-shadow 0px 0px 5px 0px currentColor
+            content ""
+            opacity 0
+            position absolute
+            transition transform 300ms
+
+    &__targetting-rule-from-left
+    &__targetting-rule-from-right
+        height 2px
+        top -1px
+
+        &:after
+            bottom 0
+            top 0
+            width 10%
+
+    &__targetting-rule-from-left
+        &:after
+            animation target-from-left 1 250ms ease-in-out
+            left 0
+
+    &__targetting-rule-from-right
+        &:after
+            animation target-from-right 1 250ms ease-in-out
+            right 0
+
+
+    &__targetting-rule-from-top
+    &__targetting-rule-from-bottom
+        left -1px
+        width 2px
+
+        &:after
+            height 10%
+            left 0
+            right 0
+
+    &__targetting-rule-from-top
+        &:after
+            animation target-from-top 1 250ms ease-in-out
+            top 0
+
+    &__targetting-rule-from-bottom
+        &:after
+            animation target-from-bottom 1 250ms ease-in-out
+            bottom 0
+
 
     &__image
         @extend $full
@@ -113,3 +176,51 @@ $full
     to
         opacity 0
         transform scale(5)
+
+@keyframes target-from-left
+    0%
+        opacity 0
+        transform translateX(0%)
+
+    50%
+        opacity 1
+
+    100%
+        opacity 0
+        transform translateX(900%)
+
+@keyframes target-from-right
+    0%
+        opacity 0
+        transform translateX(0%)
+
+    50%
+        opacity 1
+
+    100%
+        opacity 0
+        transform translateX(-900%)
+
+@keyframes target-from-top
+    0%
+        opacity 0
+        transform translateY(0%)
+
+    50%
+        opacity 1
+
+    100%
+        opacity 0
+        transform translateY(900%)
+
+@keyframes target-from-bottom
+    0%
+        opacity 0
+        transform translateY(0%)
+
+    50%
+        opacity 1
+
+    100%
+        opacity 0
+        transform translateY(-900%)

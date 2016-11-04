@@ -24,8 +24,10 @@ class LandmarkAnnotator extends React.Component {
             <div className="landmark-annotator">
                 <div className="landmark-annotator__landmarks-and-image-container">
                     <div className="landmark-annotator__landmarks-container">
-                        <button className="landmark-annotator__button" type="button"
-                                onClick={ this.createLandmark.bind(this) }>Add Landmark
+                        <button
+                            className="landmark-annotator__button" type="button"
+                            onClick={ this.createLandmark.bind(this) }>
+                            Add Landmark
                         </button>
                         <ul className="landmark-annotator__landmarks-list">
                             {
@@ -69,7 +71,7 @@ class LandmarkAnnotator extends React.Component {
                         </tr>
                         </thead>
                         <tbody>
-                            { this.attemptMakePointTableRow(landmarks, state.selectedLandmarkId) }
+                        { this.attemptMakePointTableRow(landmarks, state.selectedLandmarkId) }
                         </tbody>
                     </table>
                 </div>
@@ -103,6 +105,7 @@ class LandmarkAnnotator extends React.Component {
     makeLandmarkPoints(landmarks) {
         return landmarks.map(landmark => {
             const {points = []} = landmark;
+            const interactableRect = this.interactableAreaElement.getBoundingClientRect();
             return points.map(p => {
                 const style = {
                     color: landmark.color,
@@ -110,7 +113,28 @@ class LandmarkAnnotator extends React.Component {
                     top: `${p.y}px`
                 };
                 return (
-                    <div className="landmark-annotator__point" style={ style }></div>
+                    <div className="landmark-annotator__point-base" style={ style }>
+                        <div className="landmark-annotator__point"></div>
+                        <div
+                            className="landmark-annotator__targetting-rule-from-left"
+                            style={ { left: `-${p.x}px`, width: `${p.x}px` } }>
+                        </div>
+
+                        <div
+                            className="landmark-annotator__targetting-rule-from-right"
+                            style={ { left: `0px`, width: `${interactableRect.width - p.x}px` } }>
+                        </div>
+
+                        <div
+                            className="landmark-annotator__targetting-rule-from-top"
+                            style={ { top: `-${p.y}px`, height: `${p.y}px` } }>
+                        </div>
+
+                        <div
+                            className="landmark-annotator__targetting-rule-from-bottom"
+                            style={ { top: `0px`, height:`${interactableRect.height - p.y}px` } }>
+                        </div>
+                    </div>
                 )
             });
         });
