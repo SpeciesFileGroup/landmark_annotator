@@ -18,13 +18,15 @@ class LandmarkAnnotator extends React.Component {
         const state = store.getState();
         console.info(state);
         const landmarkAnnotationData = new LandmarkAnnotation(state);
-        const { landmarks, imageUrl, distancePerPixel, distanceUnit } = landmarkAnnotationData.getViewmodel();
+        const {landmarks, imageUrl, distancePerPixel, distanceUnit} = landmarkAnnotationData.getViewmodel();
 
         return (
             <div className="landmark-annotator">
                 <div className="landmark-annotator__landmarks-and-image-container">
                     <div className="landmark-annotator__landmarks-container">
-                        <button className="landmark-annotator__button" type="button" onClick={ this.createLandmark.bind(this) }>Add Landmark</button>
+                        <button className="landmark-annotator__button" type="button"
+                                onClick={ this.createLandmark.bind(this) }>Add Landmark
+                        </button>
                         <ul className="landmark-annotator__landmarks-list">
                             {
                                 landmarks.map(l => {
@@ -35,12 +37,12 @@ class LandmarkAnnotator extends React.Component {
                                                 <input
                                                     type="radio"
                                                     name="landmark-radios"
-                                                    onChange={ this.handleLandmarkRadioChange.bind(this, l.id) } />
+                                                    onChange={ this.handleLandmarkRadioChange.bind(this, l.id) }/>
                                             </label>
                                             <input
                                                 type="color"
                                                 value={ l.color }
-                                                onChange={ this.handleLandmarkColorChange.bind(this, l.id) } />
+                                                onChange={ this.handleLandmarkColorChange.bind(this, l.id) }/>
                                         </li>
                                     )
                                 })
@@ -53,33 +55,41 @@ class LandmarkAnnotator extends React.Component {
                             className="landmark-annotator__interactable-area"
                             ref={ (element) => this.interactableAreaElement = element }
                             onClick={ this.addPointToImage.bind(this) }>
-                                { this.makeLandmarkPoints(landmarks) }
+                            { this.makeLandmarkPoints(landmarks) }
                         </div>
                     </div>
                 </div>
                 <div className="landmark-annotator__points-data-container">
                     <div className="landmark-annotator__points-title">Result</div>
-                    <ul className="landmark-annotator__point-list">
-                        { this.attemptMakePointListItem(landmarks, state.selectedLandmarkId) }
-                    </ul>
+                    <table className="landmark-annotator__point-table">
+                        <thead>
+                        <tr>
+                            <th className="landmark-annotator__point-table-cell">x</th>
+                            <th className="landmark-annotator__point-table-cell">y</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            { this.attemptMakePointTableRow(landmarks, state.selectedLandmarkId) }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         );
     }
 
     createLandmark() {
-        store.dispatch({ type: ACTION_TYPES.CreateLandmark });
+        store.dispatch({type: ACTION_TYPES.CreateLandmark});
     }
 
     handleLandmarkRadioChange(landmarkId, event) {
         if (event.target.value)
-            store.dispatch({ type: ACTION_TYPES.SelectLandmark, args: landmarkId });
+            store.dispatch({type: ACTION_TYPES.SelectLandmark, args: landmarkId});
     }
 
     handleLandmarkColorChange(id, event) {
         const color = event.target.value;
-        const data = { color };
-        store.dispatch({ type: ACTION_TYPES.SetLandmarkData, args: { id, data } });
+        const data = {color};
+        store.dispatch({type: ACTION_TYPES.SetLandmarkData, args: {id, data}});
     }
 
     addPointToImage(event) {
@@ -87,12 +97,12 @@ class LandmarkAnnotator extends React.Component {
         const interactionRect = this.interactableAreaElement.getBoundingClientRect();
         const point = Landmark.getPointFromClick(pageX, pageY, interactionRect);
         if (point)
-            store.dispatch({ type: ACTION_TYPES.AddPoint, args: point });
+            store.dispatch({type: ACTION_TYPES.AddPoint, args: point});
     }
 
     makeLandmarkPoints(landmarks) {
         return landmarks.map(landmark => {
-            const { points = [] } = landmark;
+            const {points = []} = landmark;
             return points.map(p => {
                 const style = {
                     color: landmark.color,
@@ -106,16 +116,19 @@ class LandmarkAnnotator extends React.Component {
         });
     }
 
-    attemptMakePointListItem(landmarks, selectedLandmarkId) {
+    attemptMakePointTableRow(landmarks, selectedLandmarkId) {
         if (!selectedLandmarkId)
             return null;
 
-        const { points = [] } = landmarks.find(l => l.id === selectedLandmarkId);
+        const {points = []} = landmarks.find(l => l.id === selectedLandmarkId);
 
         return (
             points.map((p, i) => {
                 return (
-                    <li key={i}>{ p.x }, {p.y}</li>
+                    <tr key={i}>
+                        <td className="landmark-annotator__point-table-cell">{ p.x }</td>
+                        <td className="landmark-annotator__point-table-cell">{ p.y }</td>
+                    </tr>
                 );
             })
         )
