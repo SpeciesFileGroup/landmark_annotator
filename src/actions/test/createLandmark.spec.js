@@ -1,6 +1,7 @@
 const expect = require( 'chai' ).expect;
 const deepFreeze = require( 'deep-freeze' );
 const createLandmark = require( '../createLandmark' );
+const testUtils = require('../../utils/testUtils');
 
 describe( 'createLandmark Action', () => {
     it( 'should create a new landmark with an id and add it to the state', () => {
@@ -36,9 +37,7 @@ describe( 'createLandmark Action', () => {
             landmarks: [
                 {
                     id: '1',
-                    points: [
-                        [25, 50]
-                    ]
+                    point: [25, 50]
                 },
                 {
                     id: '2',

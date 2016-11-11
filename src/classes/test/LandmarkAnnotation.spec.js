@@ -1,6 +1,7 @@
 const expect = require('chai').expect;
 const LandmarkAnnotation = require('../LandmarkAnnotation');
 const Landmark = require('../Landmark');
+const testUtils = require('./../../utils/testUtils');
 
 describe('LandmarkAnnotation', () => {
     it('should be a class', () => {
@@ -27,29 +28,13 @@ describe('LandmarkAnnotation', () => {
 
         it('should return landmark viewmodels', () => {
             const landmarks = [
-                {
-                    id: '1',
-                    points: [
-                        [500, 500]
-                    ],
-                    title: 'Foo',
-                    color: `#339988`
-                }
+                testUtils.sampleLandmarkData()
             ];
             const la = new LandmarkAnnotation({landmarks});
 
-            const actualLandmarks = la.getViewmodel().landmarks;
-            expect(actualLandmarks[0]).to.deep.equal({
-                points: [
-                    {
-                        x: 500,
-                        y: 500
-                    }
-                ],
-                title: 'Foo',
-                color: '#339988',
-                id: '1'
-            });
+            const actualLandmarkViewmodel = la.getViewmodel().landmarks[0];
+            const expectedLandmarkViewmodel = new Landmark( testUtils.sampleLandmarkData() ).getViewmodel();
+            expect(actualLandmarkViewmodel).to.deep.equal(expectedLandmarkViewmodel);
         });
     });
 

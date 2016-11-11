@@ -2,13 +2,13 @@ class Landmark {
     constructor(data = {}) {
         const {
             color = '#00FF00',
-            points = [],
+            point = [],
             title = 'Untitled',
             id = null
         } = data;
 
         this.color = color;
-        this.points = points;
+        this.point = point;
         this.title = title;
         this.id = id;
     }
@@ -16,16 +16,15 @@ class Landmark {
     getViewmodel() {
         const color = this.color;
 
-        const points = this.points.map(p => {
-            const [x, y] = p;
-            return { x, y };
-        });
+        const [x, y] = this.point;
+
+        const point = x && y ? { x, y } : null;
 
         const title = this.title;
 
         const id = this.id;
 
-        return { color, points, title, id };
+        return { color, point, title, id };
     }
 
     static getPointFromClick(pageX, pageY, clickableRect) {
