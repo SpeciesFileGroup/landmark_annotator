@@ -99,44 +99,45 @@ class LandmarkAnnotator extends React.Component {
         const interactionRect = this.interactableAreaElement.getBoundingClientRect();
         const point = Landmark.getPointFromClick(pageX, pageY, interactionRect);
         if (point)
-            store.dispatch({type: ACTION_TYPES.AddPoint, args: point});
+            store.dispatch({type: ACTION_TYPES.SetPoint, args: point});
     }
 
     makeLandmarkPoints(landmarks) {
         return landmarks.map(landmark => {
-            const {points = []} = landmark;
+            const {point = null} = landmark;
+            if (!point)
+                return null;
+
             const interactableRect = this.interactableAreaElement.getBoundingClientRect();
-            return points.map(p => {
-                const style = {
-                    color: landmark.color,
-                    left: `${p.x}px`,
-                    top: `${p.y}px`
-                };
-                return (
-                    <div className="landmark-annotator__point-base" style={ style }>
-                        <div className="landmark-annotator__point"></div>
-                        <div
-                            className="landmark-annotator__targetting-rule-from-left"
-                            style={ { left: `-${p.x}px`, width: `${p.x}px` } }>
-                        </div>
-
-                        <div
-                            className="landmark-annotator__targetting-rule-from-right"
-                            style={ { left: `0px`, width: `${interactableRect.width - p.x}px` } }>
-                        </div>
-
-                        <div
-                            className="landmark-annotator__targetting-rule-from-top"
-                            style={ { top: `-${p.y}px`, height: `${p.y}px` } }>
-                        </div>
-
-                        <div
-                            className="landmark-annotator__targetting-rule-from-bottom"
-                            style={ { top: `0px`, height:`${interactableRect.height - p.y}px` } }>
-                        </div>
+            const style = {
+                color: landmark.color,
+                left: `${point.x}px`,
+                top: `${point.y}px`
+            };
+            return (
+                <div className="landmark-annotator__point-base" style={ style }>
+                    <div className="landmark-annotator__point"></div>
+                    <div
+                        className="landmark-annotator__targetting-rule-from-left"
+                        style={ { left: `-${point.x}px`, width: `${point.x}px` } }>
                     </div>
-                )
-            });
+
+                    <div
+                        className="landmark-annotator__targetting-rule-from-right"
+                        style={ { left: `0px`, width: `${interactableRect.width - point.x}px` } }>
+                    </div>
+
+                    <div
+                        className="landmark-annotator__targetting-rule-from-top"
+                        style={ { top: `-${point.y}px`, height: `${point.y}px` } }>
+                    </div>
+
+                    <div
+                        className="landmark-annotator__targetting-rule-from-bottom"
+                        style={ { top: `0px`, height:`${interactableRect.height - point.y}px` } }>
+                    </div>
+                </div>
+            )
         });
     }
 
