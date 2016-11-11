@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const LandmarkAnnotation = require('../LandmarkAnnotation');
 const Landmark = require('../Landmark');
-const testUtils = require('./testUtils');
+const testUtils = require('./../../utils/testUtils');
 
 describe('LandmarkAnnotation', () => {
     it('should be a class', () => {

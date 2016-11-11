@@ -5,6 +5,9 @@ function setLandmarkData(state, args) {
     if (!validCollectionId(state.landmarks, id) || !dataValid(data))
         return state;
 
+    if (data.title && state.landmarks.findIndex(l => l.title === data.title) > -1)
+        return state;
+
     const landmarks = state.landmarks.map(l => {
         return l.id === id ? Object.assign({}, l, data) : l;
     });

@@ -1,6 +1,7 @@
 const expect = require('chai').expect;
 const deepFreeze = require('deep-freeze');
 const setLandmarkData = require('../setLandmarkData');
+const testUtils = require('../../utils/testUtils');
 
 const state = {
     imageUrl: 'foo.jpg',
@@ -42,5 +43,26 @@ describe('setLandmarkData action', () => {
 
     it('should do nothing if nothing is given for data', () => {
         expect( setLandmarkData(state, { id: '2' })).to.equal(state);
+    });
+
+    it('should not set a title that is already set on another landmark', () => {
+        const usedTitle = "OCCUPIED";
+
+        const state = {
+            imageUrl: `http://www.placebacon.net/4000/3000`,
+            landmarks: [
+                Object.assign(testUtils.sampleLandmarkData(), { title: usedTitle }),
+                { id: '2' }
+            ]
+        };
+
+        const actualState = setLandmarkData(state, {
+            id: '2',
+            data: {
+                title: usedTitle
+            }
+        });
+
+        expect(actualState).to.equal(state);
     });
 });
