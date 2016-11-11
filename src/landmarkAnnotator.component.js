@@ -64,14 +64,14 @@ class LandmarkAnnotator extends React.Component {
                 <div className="landmark-annotator__points-data-container">
                     <div className="landmark-annotator__points-title">Result</div>
                     <table className="landmark-annotator__point-table">
-                        <thead>
-                            <tr>
-                                <th></th>
+                        <thead className="landmark-annotator__point-table-head">
+                            <tr className="landmark-annotator__point-table-row">
+                                <th className="landmark-annotator__point-table-cell"></th>
                                 { this.makePointHeaders(landmarks) }
                             </tr>
                         </thead>
-                        <tbody>
-                        { this.attemptMakePointTableRow(landmarks) }
+                        <tbody className="landmark-annotator__point-table-body">
+                            { this.attemptMakePointTableRow(landmarks) }
                         </tbody>
                     </table>
                 </div>
@@ -144,7 +144,7 @@ class LandmarkAnnotator extends React.Component {
     makePointHeaders(landmarks) {
         return landmarks.map((l, i) => {
             return (
-                <th key={i}>{ l.title }</th>
+                <th className="landmark-annotator__point-table-cell" key={i}>{ l.title }</th>
             );
         });
     }
@@ -160,7 +160,7 @@ class LandmarkAnnotator extends React.Component {
     makePointRow(rowLandmark, rowIndex, landmarks) {
         const rowHeader = [
             (
-                <th>{ rowLandmark.title }</th>
+                <th className="landmark-annotator__point-table-cell">{ rowLandmark.title }</th>
             )
         ];
 
@@ -169,7 +169,7 @@ class LandmarkAnnotator extends React.Component {
         });
 
         return (
-            <tr key={rowIndex}>
+            <tr className="landmark-annotator__point-table-row" key={rowIndex}>
                 { rowHeader.concat(cells) }
             </tr>
         );
