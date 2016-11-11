@@ -65,13 +65,13 @@ class LandmarkAnnotator extends React.Component {
                     <div className="landmark-annotator__points-title">Result</div>
                     <table className="landmark-annotator__point-table">
                         <thead>
-                        <tr>
-                            <th className="landmark-annotator__point-table-cell">x</th>
-                            <th className="landmark-annotator__point-table-cell">y</th>
-                        </tr>
+                            <tr>
+                                <th></th>
+                                { this.makePointHeaders(landmarks) }
+                            </tr>
                         </thead>
                         <tbody>
-                        { this.attemptMakePointTableRow(landmarks, state.selectedLandmarkId) }
+                        { this.attemptMakePointTableRow(landmarks) }
                         </tbody>
                     </table>
                 </div>
@@ -141,22 +141,50 @@ class LandmarkAnnotator extends React.Component {
         });
     }
 
-    attemptMakePointTableRow(landmarks, selectedLandmarkId) {
-        if (!selectedLandmarkId)
-            return null;
+    makePointHeaders(landmarks) {
+        return landmarks.map((l, i) => {
+            return (
+                <th key={i}>{ l.title }</th>
+            );
+        });
+    }
 
-        const {points = []} = landmarks.find(l => l.id === selectedLandmarkId);
-
+    attemptMakePointTableRow(landmarks) {
         return (
-            points.map((p, i) => {
-                return (
-                    <tr key={i}>
-                        <td className="landmark-annotator__point-table-cell">{ p.x }</td>
-                        <td className="landmark-annotator__point-table-cell">{ p.y }</td>
-                    </tr>
-                );
+            landmarks.map((landmarkRow, rowIndex) => {
+                return this.makePointRow(landmarkRow, rowIndex, landmarks);
             })
         )
+    }
+
+    makePointRow(rowLandmark, rowIndex, landmarks) {
+        const rowHeader = [
+            (
+                <th>{ rowLandmark.title }</th>
+            )
+        ];
+
+        const cells = landmarks.map((columnLandmark, columnIndex) => {
+            return this.makePointCell(rowLandmark, columnLandmark);
+        });
+
+        return (
+            <tr key={rowIndex}>
+                { rowHeader.concat(cells) }
+            </tr>
+        );
+    }
+
+    makePointCell(rowLandmark, columnLandmark) {
+        if (rowLandmark === columnLandmark) {
+            return (
+                <td className="landmark-annotator__point-table-cell landmark-annotator__point-table-cell--empty"></td>
+            )
+        } else {
+            return (
+                <td className="landmark-annotator__point-table-cell"> x </td>
+            )
+        }
     }
 }
 

@@ -125,19 +125,25 @@ $full
             animation target-from-bottom 1 250ms ease-in-out
             bottom 0
 
-
     &__image
         @extend $full
         max-height 100%
         max-width 100%
 
     &__points-data-container
-        flex 0 0 15vh
+        flex 0 0 20vh
         overflow auto
         padding 1vmin
 
+    &__point-table-row
+        display flex
+
     &__point-table-cell
+        flex 1 1 0
         padding 2px 8px
+
+        &--empty
+            background-color #BBB
 
     &__points-title
         font-size 20px
