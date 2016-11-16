@@ -1,7 +1,7 @@
 const actions = require('./actions/actions');
 
 const INITIAL_STATE = {
-    imageUrl: `http://www.placebacon.net/4000/3000`
+    imageUrl: Math.random() > .4 ? `http://www.placebacon.net/4000/3000` : `http://www.placekitten.com/4000/3000`
 };
 
 function reducer(state = INITIAL_STATE, action) {

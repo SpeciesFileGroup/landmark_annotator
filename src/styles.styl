@@ -125,25 +125,50 @@ $full
             animation target-from-bottom 1 250ms ease-in-out
             bottom 0
 
-
     &__image
         @extend $full
         max-height 100%
         max-width 100%
 
     &__points-data-container
-        flex 0 0 15vh
+        display flex
+        flex 0 0 20vh
+        flex-flow column nowrap
         overflow auto
-        padding 1vmin
-
-    &__point-table-cell
-        padding 2px 8px
 
     &__points-title
         font-size 20px
         font-weight bold
         line-height 1
         margin-bottom 1vmin
+        padding 1vmin
+
+    &__point-table
+        display flex
+        flex 1 0 auto
+        flex-flow column nowrap
+
+    &__point-table-head
+        flex 0 0 auto
+        width 100%
+
+    &__point-table-body
+        display flex
+        flex 1 0 auto
+        flex-flow column nowrap
+        width 100%
+
+    &__point-table-row
+        display flex
+        flex 1 0 0
+
+    &__point-table-cell
+        flex 1 1 0
+        padding 2px 8px
+        text-align center
+
+        &--empty
+            background-color #BBB
 
     &__button
         background-color white
