@@ -5,6 +5,7 @@ const ReactDOM = require('react-dom');
 const LandmarkAnnotation = require('./classes/LandmarkAnnotation');
 const Landmark = require('./classes/Landmark');
 const calculateDistance = require('./utils/calculateDistance');
+const PointConverter = require('./utils/PointConverter');
 
 class LandmarkAnnotator extends React.Component {
     componentDidMount() {
@@ -53,7 +54,10 @@ class LandmarkAnnotator extends React.Component {
                         </ul>
                     </div>
                     <div className="landmark-annotator__image-container">
-                        <img className="landmark-annotator__image" src={ imageUrl }/>
+                        <img
+                            className="landmark-annotator__image"
+                            src={ imageUrl }
+                            ref={ (element) => this.imageElement = element } />
                         <div
                             className="landmark-annotator__interactable-area"
                             ref={ (element) => this.interactableAreaElement = element }
@@ -98,9 +102,20 @@ class LandmarkAnnotator extends React.Component {
     addPointToImage(event) {
         const {pageX, pageY} = event;
         const interactionRect = this.interactableAreaElement.getBoundingClientRect();
-        const point = Landmark.getPointFromClick(pageX, pageY, interactionRect);
-        if (point)
-            store.dispatch({type: ACTION_TYPES.SetPoint, args: point});
+        const pixelPoint = Landmark.getPointFromClick(pageX, pageY, interactionRect);
+
+        if (!pixelPoint)
+            return;
+
+        const truePoint = this.getPointConverter().toTrue(pixelPoint);
+
+        store.dispatch({type: ACTION_TYPES.SetPoint, args: truePoint});
+    }
+
+    getPointConverter() {
+        const pixelImageSize = [this.imageElement.width, this.imageElement.height];
+        const trueImageSize = [this.imageElement.naturalWidth, this.imageElement.naturalHeight];
+        return new PointConverter({ pixelImageSize, trueImageSize });
     }
 
     makeLandmarkPoints(landmarks) {
@@ -110,32 +125,35 @@ class LandmarkAnnotator extends React.Component {
                 return null;
 
             const interactableRect = this.interactableAreaElement.getBoundingClientRect();
+
+            const [pixelX, pixelY] = this.getPointConverter().toPixel([ point.x, point.y ]);
+
             const style = {
                 color: landmark.color,
-                left: `${point.x}px`,
-                top: `${point.y}px`
+                left: `${pixelX}px`,
+                top: `${pixelY}px`
             };
             return (
                 <div className="landmark-annotator__point-base" style={ style }>
                     <div className="landmark-annotator__point"></div>
                     <div
                         className="landmark-annotator__targetting-rule-from-left"
-                        style={ { left: `-${point.x}px`, width: `${point.x}px` } }>
+                        style={ { left: `-${pixelX}px`, width: `${pixelX}px` } }>
                     </div>
 
                     <div
                         className="landmark-annotator__targetting-rule-from-right"
-                        style={ { left: `0px`, width: `${interactableRect.width - point.x}px` } }>
+                        style={ { left: `0px`, width: `${interactableRect.width - pixelX}px` } }>
                     </div>
 
                     <div
                         className="landmark-annotator__targetting-rule-from-top"
-                        style={ { top: `-${point.y}px`, height: `${point.y}px` } }>
+                        style={ { top: `-${pixelY}px`, height: `${pixelY}px` } }>
                     </div>
 
                     <div
                         className="landmark-annotator__targetting-rule-from-bottom"
-                        style={ { top: `0px`, height:`${interactableRect.height - point.y}px` } }>
+                        style={ { top: `0px`, height:`${interactableRect.height - pixelY}px` } }>
                     </div>
                 </div>
             )
