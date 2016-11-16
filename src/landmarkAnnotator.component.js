@@ -61,7 +61,8 @@ class LandmarkAnnotator extends React.Component {
                         <div
                             className="landmark-annotator__interactable-area"
                             ref={ (element) => this.interactableAreaElement = element }
-                            onClick={ this.addPointToImage.bind(this) }>
+                            onMouseMove={ this.dragPoint.bind(this) }
+                            onClick={ this.addPointFromClick.bind(this) }>
                             { this.makeLandmarkPoints(landmarks) }
                         </div>
                     </div>
@@ -99,7 +100,12 @@ class LandmarkAnnotator extends React.Component {
         store.dispatch({type: ACTION_TYPES.SetLandmarkData, args: {id, data}});
     }
 
-    addPointToImage(event) {
+    addPointFromClick(event) {
+        console.log(`addPointFromClick`);
+        this.addPointToImageFrom(event);
+    }
+
+    addPointToImageFrom(event) {
         const {pageX, pageY} = event;
         const interactionRect = this.interactableAreaElement.getBoundingClientRect();
         const pixelPoint = Landmark.getPointFromClick(pageX, pageY, interactionRect);
@@ -135,7 +141,12 @@ class LandmarkAnnotator extends React.Component {
             };
             return (
                 <div className="landmark-annotator__point-base" style={ style }>
-                    <div className="landmark-annotator__point"></div>
+                    <div className="landmark-annotator__point landmark-annotator__point--ripple"></div>
+                    <div
+                        className="landmark-annotator__point-dragging-handle"
+                        onMouseDown={ this.startDragging.bind(this, landmark.id) }
+                        onMouseUp={ this.stopDragging.bind(this) }>
+                    </div>
                     <div
                         className="landmark-annotator__targetting-rule-from-left"
                         style={ { left: `-${pixelX}px`, width: `${pixelX}px` } }>
@@ -160,10 +171,46 @@ class LandmarkAnnotator extends React.Component {
         });
     }
 
+    startDragging(landmarkId, event) {
+        const state = store.getState();
+        if (!state.selectedLandmarkId || state.selectedLandmarkId !== landmarkId)
+            return;
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.startPositionX = event.pageX;
+        this.startPositionY = event.pageY;
+
+        const pointBaseElement = event.target.parentNode;
+        this.draggingPointBaseElement = pointBaseElement;
+    }
+
+    dragPoint(event) {
+        if (!this.draggingPointBaseElement)
+            return;
+
+        event.preventDefault();
+
+        const currentX = event.pageX - this.startPositionX;
+        const currentY = event.pageY - this.startPositionY;
+
+        this.draggingPointBaseElement.style.transform = `translate(${currentX}px, ${currentY}px)`;
+    }
+
+    stopDragging(event) {
+        console.log(`stopDragging`);
+        event.preventDefault();
+        event.stopPropagation();
+        this.draggingPointBaseElement.style.transform = ``;
+        this.draggingPointBaseElement = null;
+        this.addPointToImageFrom(event);
+    }
+
     makePointHeaders(landmarks) {
         return landmarks.map((l, i) => {
             return (
-                <th className="landmark-annotator__point-table-cell" key={i}>{ l.title }</th>
+                <th className="landmark-annotator__point-table-cell" key={l.id}>{ l.title }</th>
             );
         });
     }
@@ -188,7 +235,7 @@ class LandmarkAnnotator extends React.Component {
         });
 
         return (
-            <tr className="landmark-annotator__point-table-row" key={rowIndex}>
+            <tr className="landmark-annotator__point-table-row" key={rowLandmark.id}>
                 { rowHeader.concat(cells) }
             </tr>
         );
@@ -197,13 +244,13 @@ class LandmarkAnnotator extends React.Component {
     makePointCell(rowLandmark, columnLandmark) {
         if (rowLandmark === columnLandmark) {
             return (
-                <td className="landmark-annotator__point-table-cell landmark-annotator__point-table-cell--empty"></td>
+                <td className="landmark-annotator__point-table-cell landmark-annotator__point-table-cell--empty" key={ columnLandmark.id }> </td>
             )
         } else {
             const distance = rowLandmark.point && columnLandmark.point ? calculateDistance(rowLandmark.point, columnLandmark.point) : '';
 
             return (
-                <td className="landmark-annotator__point-table-cell">{ distance }</td>
+                <td className="landmark-annotator__point-table-cell" key={ columnLandmark.id }>{ distance }</td>
             )
         }
     }

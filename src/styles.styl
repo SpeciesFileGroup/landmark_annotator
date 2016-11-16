@@ -41,11 +41,25 @@ $full
         flex 1 1 auto
         position relative
 
+    &__image
+        pointer-events none
+
     &__interactable-area
         @extend $full
 
     &__point-base
         position absolute
+
+        &--dragging
+            transform scale(2.25)
+
+    &__point-dragging-handle
+        cursor move
+        height 44px
+        left -22px
+        position absolute
+        top -22px
+        width @height
 
     &__point
         background-color currentColor
@@ -54,6 +68,7 @@ $full
         min-height 5px
         min-width 5px
         transform translate(-50%, -50%)
+        point-events none
         position absolute
         width 1vmin
 
@@ -97,12 +112,12 @@ $full
     &__targetting-rule-from-left
         &:after
             animation target-from-left 1 250ms ease-in-out
-            left 0
+            right 0
 
     &__targetting-rule-from-right
         &:after
             animation target-from-right 1 250ms ease-in-out
-            right 0
+            left 0
 
 
     &__targetting-rule-from-top
@@ -118,12 +133,12 @@ $full
     &__targetting-rule-from-top
         &:after
             animation target-from-top 1 250ms ease-in-out
-            top 0
+            bottom 0
 
     &__targetting-rule-from-bottom
         &:after
             animation target-from-bottom 1 250ms ease-in-out
-            bottom 0
+            top 0
 
     &__image
         @extend $full
@@ -205,47 +220,47 @@ $full
 @keyframes target-from-left
     0%
         opacity 0
-        transform translateX(0%)
+        transform translateX(900%)
 
     50%
         opacity 1
 
     100%
         opacity 0
-        transform translateX(900%)
+        transform translateX(0%)
 
 @keyframes target-from-right
     0%
         opacity 0
-        transform translateX(0%)
+        transform translateX(-900%)
 
     50%
         opacity 1
 
     100%
         opacity 0
-        transform translateX(-900%)
+        transform translateX(0%)
 
 @keyframes target-from-top
     0%
         opacity 0
-        transform translateY(0%)
+        transform translateY(900%)
 
     50%
         opacity 1
 
     100%
         opacity 0
-        transform translateY(900%)
+        transform translateY(0%)
 
 @keyframes target-from-bottom
     0%
         opacity 0
-        transform translateY(0%)
+        transform translateY(-900%)
 
     50%
         opacity 1
 
     100%
         opacity 0
-        transform translateY(-900%)
+        transform translateY(0%)
