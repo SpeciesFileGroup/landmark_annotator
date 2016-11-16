@@ -4,6 +4,7 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const LandmarkAnnotation = require('./classes/LandmarkAnnotation');
 const Landmark = require('./classes/Landmark');
+const calculateDistance = require('./utils/calculateDistance');
 
 class LandmarkAnnotator extends React.Component {
     componentDidMount() {
@@ -181,8 +182,10 @@ class LandmarkAnnotator extends React.Component {
                 <td className="landmark-annotator__point-table-cell landmark-annotator__point-table-cell--empty"></td>
             )
         } else {
+            const distance = rowLandmark.point && columnLandmark.point ? calculateDistance(rowLandmark.point, columnLandmark.point) : '';
+
             return (
-                <td className="landmark-annotator__point-table-cell"> x </td>
+                <td className="landmark-annotator__point-table-cell">{ distance }</td>
             )
         }
     }
