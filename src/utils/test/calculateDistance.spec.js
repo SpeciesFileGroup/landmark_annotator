@@ -35,9 +35,17 @@ describe('calcDistance function', () => {
             expect(actual).to.equal(70);
         });
 
-        it('should return the x different if y are the same', () => {
+        it('should return the x difference if y are the same', () => {
             const actual = calcDistance(samplePointTwo, samplePointThree);
             expect(actual).to.equal(50);
+        });
+
+        it('should return the pythagorean distance if x and y are both different', () => {
+            const actual = calcDistance(samplePointOne, samplePointFour);
+            const actualInverse = calcDistance(samplePointFour, samplePointOne);
+            const expected = 212.1;
+            expect(actual).to.equal(expected);
+            expect(actualInverse).to.equal(expected);
         });
     });
 });
