@@ -36,7 +36,8 @@ class LandmarkAnnotator extends React.Component {
             <div className="landmark-annotator">
                 <div className="landmark-annotator__control-bar">
                     <button
-                        className="landmark-annotator__button"
+                        className={ this.getScaleButtonClasses() }
+                        onClick={ this.toggleScalingMode.bind(this) }
                         type="button">
                             Set Scale
                     </button>
@@ -100,6 +101,17 @@ class LandmarkAnnotator extends React.Component {
                 </div>
             </div>
         );
+    }
+
+    getScaleButtonClasses() {
+        const isScaling = store.getState().isScaling;
+        const activatedClass = isScaling ? `landmark-annotator__button--activated` : '';
+        return `landmark-annotator__button ${activatedClass}`;
+    }
+
+    toggleScalingMode() {
+        const isScaling = store.getState().isScaling;
+        store.dispatch({ type: ACTION_TYPES.SetScalingMode, args: !isScaling });
     }
 
     createLandmark() {
