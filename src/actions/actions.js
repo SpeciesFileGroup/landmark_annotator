@@ -3,6 +3,7 @@ const ACTION_TYPES = {
     CreateLandmark: 'createLandmark',
     SelectLandmark: 'selectLandmark',
     SetLandmarkData: 'setLandmarkData',
+    SetScalingMode: 'setScalingMode',
     AddScalePoint: 'addScalePoint'
 };
 
@@ -11,6 +12,7 @@ const ACTIONS = {
     [ACTION_TYPES.CreateLandmark]: require('./createLandmark'),
     [ACTION_TYPES.SelectLandmark]: require('./selectLandmark'),
     [ACTION_TYPES.SetLandmarkData]: require('./setLandmarkData'),
+    [ACTION_TYPES.SetScalingMode]: require('./setScalingMode'),
     [ACTION_TYPES.AddScalePoint]: require('./addScalePoint')
 };
 
