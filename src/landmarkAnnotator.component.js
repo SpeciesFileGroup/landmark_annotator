@@ -10,10 +10,20 @@ const PointConverter = require('./utils/PointConverter');
 class LandmarkAnnotator extends React.Component {
     componentDidMount() {
         this.unsubscribe = store.subscribe(() => this.forceUpdate());
+        window.addEventListener('resize', this.lazyRerender.bind(this));
     }
 
     componentWillUnmount() {
         this.unsubscribe();
+    }
+
+    lazyRerender(event) {
+        if (this.renderTimeout)
+            clearTimeout(this.renderTimeout);
+
+        this.renderTimeout = setTimeout(() => {
+            this.forceUpdate();
+        }, 250);
     }
 
     render() {
