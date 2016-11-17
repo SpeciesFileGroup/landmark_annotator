@@ -63,7 +63,7 @@ class LandmarkAnnotator extends React.Component {
                             ref={ (element) => this.interactableAreaElement = element }
                             onMouseMove={ this.dragPoint.bind(this) }
                             onClick={ this.addPointFromClick.bind(this) }>
-                            { this.makeLandmarkPoints(landmarks) }
+                                { this.makeLandmarkPoints(landmarks) }
                         </div>
                     </div>
                 </div>
@@ -101,7 +101,6 @@ class LandmarkAnnotator extends React.Component {
     }
 
     addPointFromClick(event) {
-        console.log(`addPointFromClick`);
         this.addPointToImageFrom(event);
     }
 
@@ -145,7 +144,8 @@ class LandmarkAnnotator extends React.Component {
                     <div
                         className="landmark-annotator__point-dragging-handle"
                         onMouseDown={ this.startDragging.bind(this, landmark.id) }
-                        onMouseUp={ this.stopDragging.bind(this) }>
+                        onMouseUp={ this.stopDragging.bind(this) }
+                        onClick={ this.preventPropagation.bind(this) }>
                     </div>
                     <div
                         className="landmark-annotator__targetting-rule-from-left"
@@ -199,12 +199,15 @@ class LandmarkAnnotator extends React.Component {
     }
 
     stopDragging(event) {
-        console.log(`stopDragging`);
         event.preventDefault();
         event.stopPropagation();
         this.draggingPointBaseElement.style.transform = ``;
         this.draggingPointBaseElement = null;
         this.addPointToImageFrom(event);
+    }
+
+    preventPropagation(event) {
+        event.stopPropagation();
     }
 
     makePointHeaders(landmarks) {
