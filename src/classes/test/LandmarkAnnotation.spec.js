@@ -21,7 +21,7 @@ describe('LandmarkAnnotation', () => {
             expect(actualVM).to.deep.equal({
                 landmarks: [],
                 imageUrl: ``,
-                distancePerPixel: 0.01,
+                scaleDistance: null,
                 distanceUnit: 'mm'
             })
         });
@@ -61,6 +61,6 @@ describe('LandmarkAnnotation', () => {
 function assertDefault(la) {
     expect(la.landmarks).to.deep.equal([]);
     expect(la.imageUrl).to.deep.equal('');
-    expect(la.distancePerPixel).to.equal(0.01);
+    expect(la.scaleDistance).to.equal(null);
     expect(la.distanceUnit).to.equal('mm');
 }

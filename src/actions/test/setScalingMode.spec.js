@@ -11,15 +11,15 @@ deepFreeze(initialState);
 describe('setScalingMode action', () => {
     it('should set the scaling mode to the given boolean', () => {
         const actualStateTrue = setScalingMode(initialState, true);
-        expect(actualStateTrue.isScaling).to.be.true;
+        expect(actualStateTrue.isSettingScale).to.be.true;
 
         const actualStateFalse = setScalingMode(initialState, false);
-        expect(actualStateFalse.isScaling).to.be.false;
+        expect(actualStateFalse.isSettingScale).to.be.false;
     });
 
     it('should remove the current scale point if there is one', () => {
         const actualState = setScalingMode(initialState, false);
-        expect(actualState.isScaling).to.be.false;
+        expect(actualState.isSettingScale).to.be.false;
         expect(actualState.currentScalePoint).to.be.null;
     });
 });

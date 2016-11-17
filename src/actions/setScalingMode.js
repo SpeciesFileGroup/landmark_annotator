@@ -1,6 +1,6 @@
-function setScalingMode(state, isScaling) {
-    const currentScalePoint = isScaling ? state.currentScalePoint : null;
-    return Object.assign({}, state, { isScaling, currentScalePoint });
+function setScalingMode(state, isSettingScale) {
+    const currentScalePoint = isSettingScale ? state.currentScalePoint : null;
+    return Object.assign({}, state, { isSettingScale, currentScalePoint });
 }
 
 module.exports = setScalingMode;

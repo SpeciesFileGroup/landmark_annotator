@@ -5,7 +5,7 @@ const ReactDOM = require('react-dom');
 const LandmarkAnnotation = require('./classes/LandmarkAnnotation');
 const Landmark = require('./classes/Landmark');
 const calculateDistance = require('./utils/calculateDistance');
-const PointConverter = require('./utils/PointConverter');
+const ScaleConverter = require('./utils/ScaleConverter');
 
 class LandmarkAnnotator extends React.Component {
     componentDidMount() {
@@ -30,7 +30,7 @@ class LandmarkAnnotator extends React.Component {
         const state = store.getState();
         console.info(state);
         const landmarkAnnotationData = new LandmarkAnnotation(state);
-        const {landmarks, imageUrl, distancePerPixel, distanceUnit} = landmarkAnnotationData.getViewmodel();
+        const {landmarks, imageUrl, scaleDistance, distanceUnit} = landmarkAnnotationData.getViewmodel();
 
         return (
             <div className="landmark-annotator">
@@ -41,6 +41,7 @@ class LandmarkAnnotator extends React.Component {
                         type="button">
                             Set Scale
                     </button>
+                    { this.attemptScaleBar(scaleDistance, distanceUnit) }
                 </div>
                 <div className="landmark-annotator__landmarks-and-image-container">
                     <div className="landmark-annotator__landmarks-container">
@@ -80,7 +81,7 @@ class LandmarkAnnotator extends React.Component {
                             className="landmark-annotator__interactable-area"
                             ref={ (element) => this.interactableAreaElement = element }
                             onMouseMove={ this.dragPoint.bind(this) }
-                            onClick={ this.addPointFromClick.bind(this) }>
+                            onClick={ this.doClickAction.bind(this) }>
                                 { this.makeLandmarkPoints(landmarks) }
                         </div>
                     </div>
@@ -104,14 +105,30 @@ class LandmarkAnnotator extends React.Component {
     }
 
     getScaleButtonClasses() {
-        const isScaling = store.getState().isScaling;
-        const activatedClass = isScaling ? `landmark-annotator__button--activated` : '';
+        const isSettingScale = store.getState().isSettingScale;
+        const activatedClass = isSettingScale ? `landmark-annotator__button--activated` : '';
         return `landmark-annotator__button ${activatedClass}`;
     }
 
     toggleScalingMode() {
-        const isScaling = store.getState().isScaling;
-        store.dispatch({ type: ACTION_TYPES.SetScalingMode, args: !isScaling });
+        const isSettingScale = store.getState().isSettingScale;
+        store.dispatch({ type: ACTION_TYPES.SetScalingMode, args: !isSettingScale });
+    }
+
+    attemptScaleBar(scaleDistance, distanceUnit) {
+        if (scaleDistance) {
+            const pixelDistance = this.getScaleConverter().distanceToPixel(scaleDistance);
+            const width = `${pixelDistance}px`;
+            const style = { width };
+            return (
+                <div className="landmark-annotator__scale-bar-container">
+                    <div className="landmark-annotator__scale-bar" style={ style }>
+                        one { distanceUnit }
+                    </div>
+                </div>
+            )
+        } else
+            return null;
     }
 
     createLandmark() {
@@ -129,27 +146,39 @@ class LandmarkAnnotator extends React.Component {
         store.dispatch({type: ACTION_TYPES.SetLandmarkData, args: {id, data}});
     }
 
-    addPointFromClick(event) {
-        this.addPointToImageFrom(event);
+    doClickAction(event) {
+        const isSettingScale = !!store.getState().isSettingScale;
+        if (isSettingScale) {
+            const pixelPoint = this.getPixelPointFromEvent(event);
+            if (pixelPoint) {
+                const truePoint = this.getScaleConverter().pointToTrue(pixelPoint);
+                store.dispatch({ type: ACTION_TYPES.AddScalePoint, args: truePoint })
+            }
+        } else
+            this.addPointToImageFrom(event);
     }
 
     addPointToImageFrom(event) {
-        const {pageX, pageY} = event;
-        const interactionRect = this.interactableAreaElement.getBoundingClientRect();
-        const pixelPoint = Landmark.getPointFromClick(pageX, pageY, interactionRect);
+        const pixelPoint = this.getPixelPointFromEvent(event);
 
         if (!pixelPoint)
             return;
 
-        const truePoint = this.getPointConverter().toTrue(pixelPoint);
+        const truePoint = this.getScaleConverter().pointToTrue(pixelPoint);
 
         store.dispatch({type: ACTION_TYPES.SetPoint, args: truePoint});
     }
 
-    getPointConverter() {
+    getPixelPointFromEvent(event) {
+        const {pageX, pageY} = event;
+        const interactionRect = this.interactableAreaElement.getBoundingClientRect();
+        return Landmark.getPointFromClick(pageX, pageY, interactionRect);
+    }
+
+    getScaleConverter() {
         const pixelImageSize = [this.imageElement.width, this.imageElement.height];
         const trueImageSize = [this.imageElement.naturalWidth, this.imageElement.naturalHeight];
-        return new PointConverter({ pixelImageSize, trueImageSize });
+        return new ScaleConverter({ pixelImageSize, trueImageSize });
     }
 
     makeLandmarkPoints(landmarks) {
@@ -162,7 +191,7 @@ class LandmarkAnnotator extends React.Component {
 
             const [trueX, trueY] = point;
 
-            const [pixelX, pixelY] = this.getPointConverter().toPixel([ trueX, trueY ]);
+            const [pixelX, pixelY] = this.getScaleConverter().pointToPixel([ trueX, trueY ]);
 
             const style = {
                 color: landmark.color,
