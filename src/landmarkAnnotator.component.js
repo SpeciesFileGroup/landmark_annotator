@@ -331,10 +331,14 @@ class LandmarkAnnotator extends React.Component {
                 <td className="landmark-annotator__point-table-cell landmark-annotator__point-table-cell--empty" key={ columnLandmark.id }> </td>
             )
         } else {
+            const { scaleDistance, distanceUnit } = store.getState();
             const distance = rowLandmark.point && columnLandmark.point ? calculateDistance(rowLandmark.point, columnLandmark.point) : '';
 
+            const distanceByUnit = scaleDistance ? distance / scaleDistance : distance;
+            const cellContent = `${distanceByUnit} ${ scaleDistance ? distanceUnit : 'pixels' }`;
+
             return (
-                <td className="landmark-annotator__point-table-cell" key={ columnLandmark.id }>{ distance }</td>
+                <td className="landmark-annotator__point-table-cell" key={ columnLandmark.id }>{ cellContent }</td>
             )
         }
     }
