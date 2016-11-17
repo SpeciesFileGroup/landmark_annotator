@@ -4,7 +4,8 @@ const ACTION_TYPES = {
     SelectLandmark: 'selectLandmark',
     SetLandmarkData: 'setLandmarkData',
     SetScalingMode: 'setScalingMode',
-    AddScalePoint: 'addScalePoint'
+    AddScalePoint: 'addScalePoint',
+    SetDistanceUnit: 'setDistanceUnit'
 };
 
 const ACTIONS = {
@@ -13,7 +14,8 @@ const ACTIONS = {
     [ACTION_TYPES.SelectLandmark]: require('./selectLandmark'),
     [ACTION_TYPES.SetLandmarkData]: require('./setLandmarkData'),
     [ACTION_TYPES.SetScalingMode]: require('./setScalingMode'),
-    [ACTION_TYPES.AddScalePoint]: require('./addScalePoint')
+    [ACTION_TYPES.AddScalePoint]: require('./addScalePoint'),
+    [ACTION_TYPES.SetDistanceUnit]: require('./setDistanceUnit')
 };
 
 module.exports = { ACTION_TYPES, ACTIONS };

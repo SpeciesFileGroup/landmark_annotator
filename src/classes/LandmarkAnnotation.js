@@ -5,13 +5,14 @@ class LandmarkAnnotation {
         const {
             landmarks = [],
             imageUrl = ``,
-            scaleDistance = null
+            scaleDistance = null,
+            distanceUnit = null
         } = args;
 
         this.landmarks = landmarks.map(l => new Landmark(l));
         this.imageUrl = imageUrl;
         this.scaleDistance = scaleDistance;
-        this.distanceUnit = 'mm';
+        this.distanceUnit = distanceUnit;
     }
 
     getViewmodel() {

@@ -6,6 +6,7 @@ const LandmarkAnnotation = require('./classes/LandmarkAnnotation');
 const Landmark = require('./classes/Landmark');
 const calculateDistance = require('./utils/calculateDistance');
 const ScaleConverter = require('./utils/ScaleConverter');
+const Constants = require('./constants');
 
 class LandmarkAnnotator extends React.Component {
     componentDidMount() {
@@ -42,6 +43,22 @@ class LandmarkAnnotator extends React.Component {
                             Set Scale
                     </button>
                     { this.attemptScaleBar(scaleDistance, distanceUnit) }
+                    <div className="landmark-annotator__unit-select-container">
+                        {
+                            Constants.DistanceUnits.map(unit => {
+                                return (
+                                    <label className="landmark-annotator__unit-label" key={ unit }>
+                                        <span>{ unit }</span>
+                                        <input
+                                            type="radio"
+                                            name="measurement"
+                                            checked={ distanceUnit === unit }
+                                            onChange={ this.setDistanceUnit.bind(this, unit) } />
+                                    </label>
+                                );
+                            })
+                        }
+                    </div>
                 </div>
                 <div className="landmark-annotator__landmarks-and-image-container">
                     <div className="landmark-annotator__landmarks-container">
@@ -129,6 +146,10 @@ class LandmarkAnnotator extends React.Component {
             )
         } else
             return null;
+    }
+
+    setDistanceUnit(unit) {
+        store.dispatch({type: ACTION_TYPES.SetDistanceUnit, args: unit});
     }
 
     createLandmark() {

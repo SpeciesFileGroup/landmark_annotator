@@ -22,7 +22,7 @@ describe('LandmarkAnnotation', () => {
                 landmarks: [],
                 imageUrl: ``,
                 scaleDistance: null,
-                distanceUnit: 'mm'
+                distanceUnit: null
             })
         });
 
@@ -56,11 +56,19 @@ describe('LandmarkAnnotation', () => {
             expect(la.getViewmodel().imageUrl).to.equal(url);
         });
     });
+
+    describe('distance', () => {
+        it('should be able to set a distance unit', () => {
+            const distanceUnit = 'cm';
+            const la = new LandmarkAnnotation({ distanceUnit });
+            expect(la.getViewmodel().distanceUnit).to.equal(distanceUnit);
+        });
+    });
 });
 
 function assertDefault(la) {
     expect(la.landmarks).to.deep.equal([]);
     expect(la.imageUrl).to.deep.equal('');
     expect(la.scaleDistance).to.equal(null);
-    expect(la.distanceUnit).to.equal('mm');
+    expect(la.distanceUnit).to.equal(null);
 }
