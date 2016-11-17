@@ -149,7 +149,7 @@ class LandmarkAnnotator extends React.Component {
                 top: `${pixelY}px`
             };
             return (
-                <div className="landmark-annotator__point-base" style={ style }>
+                <div className="landmark-annotator__point-base" style={ style } key={ landmark.id }>
                     <div className="landmark-annotator__point landmark-annotator__point--ripple"></div>
                     <div
                         className="landmark-annotator__point-dragging-handle"
@@ -239,7 +239,7 @@ class LandmarkAnnotator extends React.Component {
     makePointRow(rowLandmark, rowIndex, landmarks) {
         const rowHeader = [
             (
-                <th className="landmark-annotator__point-table-cell">{ rowLandmark.title }</th>
+                <th className="landmark-annotator__point-table-cell" key={ rowLandmark.id + '-row-header' }>{ rowLandmark.title }</th>
             )
         ];
 
