@@ -34,6 +34,13 @@ class LandmarkAnnotator extends React.Component {
 
         return (
             <div className="landmark-annotator">
+                <div className="landmark-annotator__control-bar">
+                    <button
+                        className="landmark-annotator__button"
+                        type="button">
+                            Set Scale
+                    </button>
+                </div>
                 <div className="landmark-annotator__landmarks-and-image-container">
                     <div className="landmark-annotator__landmarks-container">
                         <button
