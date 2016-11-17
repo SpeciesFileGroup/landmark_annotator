@@ -4,22 +4,24 @@ class LandmarkAnnotation {
     constructor(args = {}) {
         const {
             landmarks = [],
-            imageUrl = ``
+            imageUrl = ``,
+            scaleDistance = null,
+            distanceUnit = null
         } = args;
 
         this.landmarks = landmarks.map(l => new Landmark(l));
         this.imageUrl = imageUrl;
-        this.distancePerPixel = 0.01;
-        this.distanceUnit = 'mm';
+        this.scaleDistance = scaleDistance;
+        this.distanceUnit = distanceUnit;
     }
 
     getViewmodel() {
         const landmarks = this.landmarks.map(l => l.getViewmodel());
         const imageUrl = this.imageUrl;
-        const distancePerPixel = this.distancePerPixel;
+        const scaleDistance = this.scaleDistance;
         const distanceUnit = this.distanceUnit;
 
-        return { landmarks, imageUrl, distancePerPixel, distanceUnit };
+        return { landmarks, imageUrl, scaleDistance, distanceUnit };
     }
 }
 

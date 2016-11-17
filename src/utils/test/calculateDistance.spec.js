@@ -5,25 +5,13 @@ describe('calcDistance function', () => {
     const magicX = 50;
     const magicY = 120;
 
-    const samplePointOne = {
-        x: magicX,
-        y: 50
-    };
+    const samplePointOne = [magicX, 50];
 
-    const samplePointTwo = {
-        x: magicX,
-        y: magicY
-    };
+    const samplePointTwo = [magicX, magicY];
 
-    const samplePointThree = {
-        x: 100,
-        y: magicY
-    };
+    const samplePointThree = [100, magicY];
 
-    const samplePointFour = {
-        x: 200,
-        y: 200
-    };
+    const samplePointFour = [200, 200];
 
     it('should be a function', () => {
         expect(calcDistance).to.be.a('function');

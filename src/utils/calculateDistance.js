@@ -1,15 +1,18 @@
 function calculateDistance(firstPoint, secondPoint) {
+    const [firstPointX, firstPointY] = firstPoint;
+    const [secondPointX, secondPointY] = secondPoint;
+
+    if (firstPointX === secondPointX)
+        return Math.abs(firstPointY - secondPointY);
+
+    if (firstPointY === secondPointY)
+        return Math.abs(firstPointX - secondPointX);
+
     //a, b, and c refer to the pythagorean theorem
-    if (firstPoint.x === secondPoint.x)
-        return Math.abs(firstPoint.y - secondPoint.y);
-
-    if (firstPoint.y === secondPoint.y)
-        return Math.abs(firstPoint.x - secondPoint.x);
-
-    const a = firstPoint.x - secondPoint.x;
+    const a = firstPointX - secondPointX;
     const aSquared = a * a;
 
-    const b = firstPoint.y - secondPoint.y;
+    const b = firstPointY - secondPointY;
     const bSquared = b * b;
 
     const c = Math.sqrt(aSquared + bSquared);
