@@ -148,7 +148,9 @@ class LandmarkAnnotator extends React.Component {
 
             const interactableRect = this.interactableAreaElement.getBoundingClientRect();
 
-            const [pixelX, pixelY] = this.getPointConverter().toPixel([ point.x, point.y ]);
+            const [trueX, trueY] = point;
+
+            const [pixelX, pixelY] = this.getPointConverter().toPixel([ trueX, trueY ]);
 
             const style = {
                 color: landmark.color,

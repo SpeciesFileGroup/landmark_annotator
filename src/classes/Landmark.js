@@ -16,9 +16,7 @@ class Landmark {
     getViewmodel() {
         const color = this.color;
 
-        const [x, y] = this.point;
-
-        const point = x && y ? { x, y } : null;
+        const point = this.point.length ? this.point : null;
 
         const title = this.title;
 

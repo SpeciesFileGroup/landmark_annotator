@@ -31,12 +31,7 @@ describe('Landmark', () => {
         it('should be able to have a point', () => {
             const point = [100, 200];
             const l = new Landmark({ point });
-            expect(l.getViewmodel().point).to.deep.equal(
-                {
-                    x: 100,
-                    y: 200
-                }
-            );
+            expect(l.getViewmodel().point).to.deep.equal(point);
         });
     });
 
